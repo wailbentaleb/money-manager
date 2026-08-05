@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum Categorie {
+  NOURRITURE
+  TRANSPORT
+  LOGEMENT
+  LOISIRS
+  FACTURES
+  AUTRE
+}
+
+enum StatutDette {
+  RENDU
+  NON_RENDU
+}
+
+model Sejour {
+  id              Int             @id @default(autoincrement())
+  nom             String
+  dateDebut       String
+  dateFin         String
+  budgetTotal     Float
+  deviseReference String          @default("CAD")
+  createdAt       DateTime        @default(now())
+  depenses        Depense[]
+  dettes          ArgentARendre[]
+}
+
+model Depense {
+  id              Int       @id @default(autoincrement())
+  sejourId        Int
+  sejour          Sejour    @relation(fields: [sejourId], references: [id], onDelete: Cascade)
+  montant         Float
+  devise          String
+  montantConverti Float
+  deviseRef       String
+  categorie       Categorie
+  description     String
+  date            String
+  createdAt       DateTime  @default(now())
+}
+
+model ArgentARendre {
+  id             Int         @id @default(autoincrement())
+  sejourId       Int
+  sejour         Sejour      @relation(fields: [sejourId], references: [id], onDelete: Cascade)
+  montant        Float
+  devise         String
+  montantConverti Float
+  deviseRef      String
+  personne       String
+  dateEcheance   String?
+  statut         StatutDette @default(NON_RENDU)
+  createdAt      DateTime    @default(now())
+}
+
+model TauxChange {
+  devise   String   @id
+  tauxEUR  Float
+  misAJour DateTime
+  manuel   Boolean  @default(false)
+}

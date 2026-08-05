@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --c-bg: #f8fafc;
+  --c-carte: #ffffff;
+  --c-encre: #0f172a;
+  --c-fade: #64748b;
+  --c-ligne: #e2e8f0;
+  --c-sous: #334155;
+}
+
+.dark {
+  --c-bg: #020617;
+  --c-carte: #0f172a;
+  --c-encre: #f1f5f9;
+  --c-fade: #94a3b8;
+  --c-ligne: #1e293b;
+  --c-sous: #cbd5e1;
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-carte: var(--c-carte);
+  --color-encre: var(--c-encre);
+  --color-fade: var(--c-fade);
+  --color-ligne: var(--c-ligne);
+  --color-sous: var(--c-sous);
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-encre antialiased;
+  }
+  input[type="date"] {
+    color-scheme: light dark;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-400/40;
+  }
+}
+
+@layer components {
+  .carte {
+    @apply rounded-2xl border border-ligne bg-carte shadow-sm;
+  }
+  .champ {
+    @apply w-full rounded-xl border border-ligne bg-bg px-3 py-2.5 text-sm text-encre transition placeholder:text-fade/60 focus:border-indigo-500/60 focus:outline-none focus:ring-2 focus:ring-indigo-500/25;
+  }
+  .btn-primaire {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 active:scale-[.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-secondaire {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ligne bg-carte px-4 py-2.5 text-sm font-medium text-encre transition hover:bg-bg active:scale-[.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .etiquette {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-fade;
+  }
+  .pastille {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset;
+  }
+}
